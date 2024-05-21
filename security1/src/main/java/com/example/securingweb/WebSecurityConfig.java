@@ -29,7 +29,6 @@ public class WebSecurityConfig {
         return http.build();
     }
 
-    // 사용자 세부 정보 제공
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user =
