@@ -27,7 +27,6 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/view/loginSuccess",
                         "/action/**",
                         "/public/**").permitAll()
-                // .antMatchers("/chk").permitAll() // "/chk" 엔드포인트는 모든 사용자에게 허용
                 .anyRequest().authenticated() // 그 외의 요청은 인증된 사용자에게만 허용
                 .and()
                 .formLogin() // 폼 기반 로그인 설정
