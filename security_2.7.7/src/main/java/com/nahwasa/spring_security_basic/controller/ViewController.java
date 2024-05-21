@@ -7,6 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpSession;
+import java.util.Objects;
+
 @Controller
 @RequestMapping("/view")
 public class ViewController {
@@ -23,8 +26,13 @@ public class ViewController {
 
     @GetMapping("/loginSuccess")
     public String viewLoginSuccessPage(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("userId", user.getUsername());
-        model.addAttribute("userRoles", user.getAuthorities());
-        return "loginSuccess";
+        String viewName = "loginSuccess";
+        if(!Objects.isNull(user)){
+            model.addAttribute("userId", user.getUsername());
+            model.addAttribute("userRoles", user.getAuthorities());
+        }else{
+            viewName = "login";
+        }
+        return viewName;
     }
 }

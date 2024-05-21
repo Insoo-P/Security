@@ -21,11 +21,4 @@ public class ActionController {
         storage.putData(id, new UserInfo(id, pw, "USER"));
         return "login";
     }
-
-    @GetMapping("/loginSuccess")
-    public String viewLoginSuccessPage(@AuthenticationPrincipal User user, Model model) {
-        model.addAttribute("userId", user.getUsername());
-        model.addAttribute("userRoles", user.getAuthorities());
-        return "loginSuccess";
-    }
 }
