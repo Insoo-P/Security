@@ -59,7 +59,7 @@
 </div>
 </body>
 
-<script>
+<script type="module">
 
     async function postData(url = "", data = {}) {
       const response = await fetch(url, {
@@ -67,12 +67,10 @@
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(data), 
+        body: JSON.stringify(data),
       });
       return response.json();
     }
-
-
 
     const signUpForm = document.getElementById("signUpForm")
     signUpForm.addEventListener("submit", (e) => {
@@ -86,10 +84,10 @@
         postData("/api/signUp", jsonData).then((data) => {
             if(data.result){
                 window.location.href = "/view/login"
+                alert("회원가입 성공")
             }else{
                 alert("회원가입 실패")
             }
-
         });
     })
 

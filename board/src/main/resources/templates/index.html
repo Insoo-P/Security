@@ -4,22 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Index</title>
-
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 10px 0;
+            background-color: #007BFF;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
-<h1>Index Page</h1>
+<div class="container">
+    <h1>HOME</h1>
+    <form method="get" action="/view/boardList">
+        <button type="submit">게시판목록</button>
+    </form>
 
-<form method="post" action="/api/logout">
-    <button type="submit">로그아웃</button>
-</form>
+    <form method="post" action="/api/logout">
+        <button type="submit">로그아웃</button>
+    </form>
+</div>
+
 </body>
 
 <script>
     // Security 보안을 타지 않는다.
-    const loginBtn = document.getElementById("login")
-    loginBtn.addEventListener("click", () => {
-        window.location.href = '/view/login'
-    })
+    // const loginBtn = document.getElementById("login")
+    // loginBtn.addEventListener("click", () => {
+    //     window.location.href = '/view/login'
+    // })
     
     // Security 보안을 탄다.
     // loginBtn.addEventListener("click", () => {
