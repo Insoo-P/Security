@@ -1,25 +1,15 @@
 package com.example.demo.security;
 
 
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LoginIdPwValidator implements UserDetailsService {
-
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Autowired
     private DummyUserMapper mapper;
@@ -32,13 +22,10 @@ public class LoginIdPwValidator implements UserDetailsService {
             return null;
         }
 
-        String pw = user.getPw();
-        String roles = user.getRoles();
-
         return User.builder()
                 .username(user.getId())
-                .password(passwordEncoder().encode(pw))
-                .roles(roles)
+                .password(user.getPw())
+                .roles(user.getRoles())
                 .build();
     }
 }
