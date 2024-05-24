@@ -1,7 +1,5 @@
 package com.example.demo;
 
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,26 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class ViewController {
 
     @GetMapping("")
-    public String viewIndexPage() {
-//        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//        if (auth != null && auth.isAuthenticated() && !"anonymousUser".equals(auth.getPrincipal())) {
-//            return "board/boardList.html";
-//        }
-        return "index.html";
-    }
+    public String viewIndexPage() { return "index"; }
 
     @GetMapping("view/login")
-    public String viewLoginPage() {
-        return "login.html";
-    }
+    public String viewLoginPage() { return "login"; }
 
     @GetMapping("view/signUp")
     public String viewSignUpPage() {
-        return "signUp.html";
+        return "signUp";
     }
 
     @GetMapping("view/boardList")
     public String viewBoardListPage() {
-        return "boardList.html";
+        return "boardList";
     }
 }

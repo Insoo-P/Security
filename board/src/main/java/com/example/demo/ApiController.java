@@ -12,7 +12,14 @@ public class ApiController {
 
     @PostMapping(name = "로그인", path= "/login")
     @ResponseBody
-    public Map<String, Object> test(@RequestBody Map<String, Object> paramMap ) {
+    public Map<String, Object> login(@RequestBody Map<String, Object> paramMap ) {
+        return paramMap;
+    }
+
+    @PostMapping(name = "회원가입", path= "/signUp")
+    @ResponseBody
+    public Map<String, Object> signUp(@RequestBody Map<String, Object> paramMap ) {
+
         return paramMap;
     }
 

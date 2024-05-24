@@ -21,8 +21,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers("/", "/view/signUp", "/api/login").anonymous() // 인증이 안된 유저만 접근 가능
-                    .anyRequest().authenticated() // 그 외에는 인증한 사람만 접근 가능
+                    .antMatchers("/", "/view/signUp", "/api/login", "/api/signUp").permitAll()
+                    .antMatchers("/view/login").anonymous()
+                    .anyRequest().authenticated()
                 .and()
                 .formLogin()
                     .loginPage("/view/login")
@@ -30,7 +31,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .usernameParameter("id")
                     .passwordParameter("pw")
                     .defaultSuccessUrl("/view/boardList", true)
-                    // .failureHandler(customFailHandler)
+//                     .failureHandler(customFailHandler)
                     .permitAll()
                 .and()
                 .logout()
