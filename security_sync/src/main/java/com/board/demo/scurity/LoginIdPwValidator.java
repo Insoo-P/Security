@@ -18,7 +18,7 @@ public class LoginIdPwValidator implements UserDetailsService {
         Member user = mapper.getUserInfo(id);
 
         if (user == null) {
-            return null;
+            throw new UsernameNotFoundException("존재하지 않는 계정입니다.");
         }
 
         return User.builder()

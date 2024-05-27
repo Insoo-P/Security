@@ -17,7 +17,6 @@ public class DummyUserMapper {
             return Member.builder()
                     .id(user.getId())
                     .pw(user.getPw())
-                    .fullName(user.getFullName())
                     .roles(user.getRoles())
                     .build();
         }

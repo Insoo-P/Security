@@ -10,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -17,6 +18,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     LoginIdPwValidator loginIdPwValidator;
+
+    @Autowired
+    private AuthenticationSuccessHandler authenticationSuccessHandler;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -31,6 +35,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/loginProc") // 로그인 처리 URL을 "/loginProc"으로 설정
                     .usernameParameter("id") // 사용자 이름 매개변수를 "id"로 설정
                     .passwordParameter("pw") // 비밀번호 매개변수를 "pw"로 설정
+                    .successHandler(authenticationSuccessHandler) // 로그인 성공 핸들러 등록
                     .defaultSuccessUrl("/view/loginSuccess", true) // 로그인 성공 후 기본적으로 이동할 URL을 "/view/loginSuccess"로 설정
                     .permitAll() // 로그인 페이지는 모든 사용자에게 허용
                 .and()

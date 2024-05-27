@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>홈</title>
+    <title>로그인</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" type="text/css" href="/css/login.css">
 </head>
@@ -21,18 +21,7 @@
                     <button type="submit" class="main-button">홈</button>
                 </form>
             </li>
-            <li>
-                <form method="GET" action="/view/member/login">
-                    <button type="submit" class="main-button">로그인</button>
-                </form>
-            </li>
-            <li>
-                <form method="GET" action="/view/member/signUp">
-                    <button type="submit" class="main-button">회원가입</button>
-                </form>
-            </li>
             <li class="dropdown">
-                <button class="dropdown-button">게시판</button>
                 <div class="dropdown-content">
                     <form method="GET" action="/view/board/normalBoardList">
                         <button type="submit" class="sub-button">게시판 (일반)</button>
@@ -49,10 +38,13 @@
     </nav>
     <main class="main-login">
         <h2>로그인</h2>
-        <div sec:authorize="isAuthenticated()">
-            <p>인증되었습니다.</p>
+        <div th:if="${error}" class="alert alert-danger">
+            <p th:text="${error}"></p>
         </div>
-        <form method="POST" action="/api/login">
+        <form method="POST" action="/api/login" style="width:40%;">
+<!--            <span th:if="${error}">-->
+<!--                <p id="valid" class="alert alert-danger" th:text="${exception}"></p>-->
+<!--            </span>-->
             <div style="margin-bottom: 15px;">
                 <label for="username">아이디:</label>
                 <input type="text" id="username" name="id" required>
@@ -66,6 +58,26 @@
             </div>
         </form>
     </main>
+    <nav class="right-nav">
+        <ul>
+            <li>
+                <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
+                    <button type="submit" class="main-button">로그인</button>
+                </form>
+                <form method="GET" action="/view/member/myPage" sec:authorize="isAuthenticated()">
+                    <button type="submit" class="main-button">마이페이지</button>
+                </form>
+            </li>
+            <li>
+                <form method="GET" action="/view/member/signUp" sec:authorize="isAnonymous()">
+                    <button type="submit" class="main-button">회원가입</button>
+                </form>
+                <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
+                    <button type="submit" class="main-button">로그아웃</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
 </div>
 <footer>
     <p>&copy; 2024 My Website</p>

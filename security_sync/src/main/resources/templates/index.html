@@ -20,24 +20,7 @@
                         <button type="submit" class="main-button">홈</button>
                     </form>
                 </li>
-                <li>
-                    <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
-                        <button type="submit" class="main-button">로그인</button>
-                    </form>
-                    <form method="GET" action="/view/member/myPage" sec:authorize="isAuthenticated()">
-                        <button type="submit" class="main-button">마이페이지</button>
-                    </form>
-                </li>
-                <li>
-                    <form method="GET" action="/view/member/signUp" sec:authorize="isAnonymous()">
-                        <button type="submit" class="main-button">회원가입</button>
-                    </form>
-                    <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
-                        <button type="submit" class="main-button">로그아웃</button>
-                    </form>
-                </li>
                 <li class="dropdown">
-                    <button class="dropdown-button">게시판</button>
                     <div class="dropdown-content">
                         <form method="GET" action="/view/board/normalBoardList">
                             <button type="submit" class="sub-button">게시판 (일반)</button>
@@ -56,6 +39,26 @@
             <h2>Main Content</h2>
             <p>Welcome to the main content area. This is where your main content will go.</p>
         </main>
+        <nav class="right-nav">
+            <ul>
+                <li>
+                    <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
+                        <button type="submit" class="main-button">로그인</button>
+                    </form>
+                    <form method="GET" action="/view/member/myPage" sec:authorize="isAuthenticated()">
+                        <button type="submit" class="main-button">마이페이지</button>
+                    </form>
+                </li>
+                <li>
+                    <form method="GET" action="/view/member/signUp" sec:authorize="isAnonymous()">
+                        <button type="submit" class="main-button">회원가입</button>
+                    </form>
+                    <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
+                        <button type="submit" class="main-button">로그아웃</button>
+                    </form>
+                </li>
+            </ul>
+        </nav>
     </div>
     <footer>
         <p>&copy; 2024 My Website</p>

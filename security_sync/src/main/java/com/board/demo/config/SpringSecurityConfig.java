@@ -1,5 +1,6 @@
 package com.board.demo.config;
 
+import com.board.demo.scurity.CustomAuthFailureHandler;
 import com.board.demo.scurity.LoginIdPwValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -10,13 +11,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-//    @Autowired
-//    CustomFailHandler customFailHandler;
+    @Autowired
+    CustomAuthFailureHandler customAuthFailHandler;
 
     @Autowired
     LoginIdPwValidator loginIdPwValidator;
@@ -26,23 +28,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable()
                 .authorizeRequests()
 //                .antMatchers("/view/signUp", "/view/login").anonymous()
-                .antMatchers("/","/view/member/signUp", "/api/member/signUp").permitAll()
-                .antMatchers("/css/**").permitAll()
-                .anyRequest().authenticated()
+                    .antMatchers("/", "/view", "/view/member/signUp", "/api/member/signUp", "/favicon.ico").permitAll()
+                    .antMatchers("/css/**").permitAll()
+                    .anyRequest().authenticated()
                 .and()
                 .formLogin()
                 .loginPage("/view/member/login")
-                .loginProcessingUrl("/api/login")
-                .usernameParameter("id")
-                .passwordParameter("pw")
-                .defaultSuccessUrl("/", true)
-//                .failureHandler(customFailHandler)
-                .permitAll()
-
+                    .loginProcessingUrl("/api/login")
+                    .usernameParameter("id")
+                    .passwordParameter("pw")
+                    .defaultSuccessUrl("/")
+                    .failureHandler(customAuthFailHandler)
+                    .permitAll()
                 .and()
                 .logout()
-                .logoutUrl("/api/logout")
-                .logoutSuccessUrl("/");
+                    .logoutUrl("/api/logout")
+                    .logoutSuccessUrl("/");
 //                    .logoutSuccessHandler((request, response, authentication) -> {
 //                        response.sendRedirect("/view/login");
 //                    })
