@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <link rel="stylesheet" type="text/css" href="/css/boardList.css">
+</head>
+<body>
+<header>
+    <h1>Welcome to My Website</h1>
+</header>
+<div class="container">
+    <nav>
+        <ul>
+            <li>
+                <form method="GET" action="/">
+                    <button type="submit" class="main-button">홈</button>
+                </form>
+            </li>
+            <li>
+                <form method="GET" action="/view/member/login">
+                    <button type="submit" class="main-button">로그인</button>
+                </form>
+            </li>
+            <li>
+                <form method="GET" action="/view/member/signUp">
+                    <button type="submit" class="main-button">회원가입</button>
+                </form>
+            </li>
+            <li class="dropdown">
+                <button class="dropdown-button">게시판</button>
+                <div class="dropdown-content">
+                    <form method="GET" action="/view/board/normalBoardList">
+                        <button type="submit" class="sub-button">게시판 (일반)</button>
+                    </form>
+                    <form method="GET" action="/view/board/normalBoardList">
+                        <button type="submit" class="sub-button">게시판 (우수)</button>
+                    </form>
+                    <form method="GET" action="/view/board/normalBoardList">
+                        <button type="submit" class="sub-button">게시판 (운영)</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <table class="board-list">
+            <thead>
+            <tr>
+                <th>게시글 제목</th>
+                <th>작성자</th>
+                <th>날짜</th>
+                <th>조회수</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td><a href="#">게시글 제목 1</a></td>
+                <td>작성자1</td>
+                <td>2024-05-27</td>
+                <td>100</td>
+            </tr>
+            <tr>
+                <td><a href="#">게시글 제목 2</a></td>
+                <td>작성자2</td>
+                <td>2024-05-26</td>
+                <td>80</td>
+            </tr>
+            <!-- Add more rows as needed -->
+            </tbody>
+        </table>
+    </main>
+</div>
+<footer>
+    <p>&copy; 2024 My Website</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>간단한 레이아웃</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+<header>
+    <h1>Header</h1>
+</header>
+<nav>
+    <ul>
+        <li><from action="/" ><button>홈으로</button></from></li>
+        <li><a href="#">로그인</a></li>
+        <li><a href="#">회원가입</a></li>
+        <li><a href="#">게시판</a></li>
+    </ul>
+</nav>
+<section>
+    <h2>Section</h2>
+    <div th:replace="~{view/content}"></div>
+</section>
+<footer>
+    <p>Footer</p>
+</footer>
+</body>
+</html>

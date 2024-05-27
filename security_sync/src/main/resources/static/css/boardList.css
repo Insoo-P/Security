@@ -1,0 +1,53 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #343a40;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+main {
+    padding: 20px;
+    background-color: white;
+    margin: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    overflow-y: auto;
+}
+
+.board-list {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.board-list th, .board-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.board-list th {
+    background-color: #f2f2f2;
+    text-align: left;
+}
+
+.board-list tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.board-list tr:hover {
+    background-color: #ddd;
+}
+
+footer {
+    background-color: #343a40;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}

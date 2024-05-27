@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>홈</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Welcome to My Website</h1>
+    </header>
+    <div class="container">
+        <nav>
+            <ul>
+                <li>
+                    <form method="GET" action="/">
+                        <button type="submit" class="main-button">홈</button>
+                    </form>
+                </li>
+                <li>
+                    <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
+                        <button type="submit" class="main-button">로그인</button>
+                    </form>
+                    <form method="GET" action="/view/member/myPage" sec:authorize="isAuthenticated()">
+                        <button type="submit" class="main-button">마이페이지</button>
+                    </form>
+                </li>
+                <li>
+                    <form method="GET" action="/view/member/signUp" sec:authorize="isAnonymous()">
+                        <button type="submit" class="main-button">회원가입</button>
+                    </form>
+                    <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
+                        <button type="submit" class="main-button">로그아웃</button>
+                    </form>
+                </li>
+                <li class="dropdown">
+                    <button class="dropdown-button">게시판</button>
+                    <div class="dropdown-content">
+                        <form method="GET" action="/view/board/normalBoardList">
+                            <button type="submit" class="sub-button">게시판 (일반)</button>
+                        </form>
+                        <form method="GET" action="/view/board/normalBoardList">
+                            <button type="submit" class="sub-button">게시판 (우수)</button>
+                        </form>
+                        <form method="GET" action="/view/board/normalBoardList">
+                            <button type="submit" class="sub-button">게시판 (운영)</button>
+                        </form>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+        <main>
+            <h2>Main Content</h2>
+            <p>Welcome to the main content area. This is where your main content will go.</p>
+        </main>
+    </div>
+    <footer>
+        <p>&copy; 2024 My Website</p>
+    </footer>
+</body>
+</html>
