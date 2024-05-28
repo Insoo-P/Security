@@ -38,13 +38,10 @@
     </nav>
     <main class="main-login">
         <h2>로그인</h2>
-        <div th:if="${error}" class="alert alert-danger">
-            <p th:text="${error}"></p>
+        <div th:if="${message}" class="alert alert-danger">
+            <p th:text="${message}"></p>
         </div>
-        <form method="POST" action="/api/login" style="width:40%;">
-<!--            <span th:if="${error}">-->
-<!--                <p id="valid" class="alert alert-danger" th:text="${exception}"></p>-->
-<!--            </span>-->
+        <form method="POST" action="/member/api/login" style="width:40%;">
             <div style="margin-bottom: 15px;">
                 <label for="username">아이디:</label>
                 <input type="text" id="username" name="id" required>
@@ -61,7 +58,7 @@
     <nav class="right-nav">
         <ul>
             <li>
-                <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
+                <form method="GET" action="/member/view/login" sec:authorize="isAnonymous()">
                     <button type="submit" class="main-button">로그인</button>
                 </form>
                 <form method="GET" action="/view/member/myPage" sec:authorize="isAuthenticated()">
@@ -69,7 +66,7 @@
                 </form>
             </li>
             <li>
-                <form method="GET" action="/view/member/signUp" sec:authorize="isAnonymous()">
+                <form method="GET" action="/member/view/signUp" sec:authorize="isAnonymous()">
                     <button type="submit" class="main-button">회원가입</button>
                 </form>
                 <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
@@ -82,5 +79,13 @@
 <footer>
     <p>&copy; 2024 My Website</p>
 </footer>
+<!--<script th:inline="javascript">-->
+<!--    /*<![CDATA[*/-->
+<!--    var errorMessage = /*[[${message}]]*/ '';-->
+<!--    if(errorMessage) {-->
+<!--        alert(errorMessage);-->
+<!--    }-->
+<!--    /*]]>*/-->
+<!--</script>-->
 </body>
 </html>

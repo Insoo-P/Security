@@ -1,4 +1,4 @@
-package com.board.demo.scurity;
+package com.board.demo.security;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Member {
+public class Role {
     private String id;
-    private String pw;
-    private String fullName;
-    private String email;
-    private String roles;
+    private String role;
 }

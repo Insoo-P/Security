@@ -1,7 +1,8 @@
 package com.board.demo.config;
 
-import com.board.demo.scurity.CustomAuthFailureHandler;
-import com.board.demo.scurity.LoginIdPwValidator;
+import com.board.demo.security.CustomAuthFailureHandler;
+import com.board.demo.security.CustomAuthSuccessHandler;
+import com.board.demo.security.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -21,23 +21,32 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     CustomAuthFailureHandler customAuthFailHandler;
 
     @Autowired
-    LoginIdPwValidator loginIdPwValidator;
+    CustomAuthSuccessHandler customAuthSuccessHandler;
+
+    @Autowired
+    CustomUserDetailsService customUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable()
+        http.headers().frameOptions().disable();
+        http.csrf()
+                .ignoringAntMatchers("/h2-console/**")
+                .disable()
                 .authorizeRequests()
 //                .antMatchers("/view/signUp", "/view/login").anonymous()
-                    .antMatchers("/", "/view", "/view/member/signUp", "/api/member/signUp", "/favicon.ico").permitAll()
+                    .antMatchers("/", "/member/view/signUp", "/member/api/signUp", "/favicon.ico", "/h2-console/**").permitAll()
+//                    .antMatchers("/boardP**").hasRole("ROLE_PREMIUM")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .antMatchers("/css/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/view/member/login")
-                    .loginProcessingUrl("/api/login")
+                .loginPage("/member/view/login")
+                    .loginProcessingUrl("/member/api/login")
                     .usernameParameter("id")
                     .passwordParameter("pw")
-                    .defaultSuccessUrl("/")
+//                    .defaultSuccessUrl("/")
+                    .successHandler(customAuthSuccessHandler)
                     .failureHandler(customAuthFailHandler)
                     .permitAll()
                 .and()
@@ -57,7 +66,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(loginIdPwValidator)
+        auth.userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder());
     }
 

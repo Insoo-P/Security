@@ -37,7 +37,7 @@
     </nav>
     <main class="main-signup">
         <h2>회원가입</h2>
-        <form method="POST" action="/api/member/signUp" style="width:40%;">
+        <form method="POST" action="/member/api/signUp" style="width:40%;">
             <div style="margin-bottom: 15px;">
                 <label for="newUsername">아이디:</label>
                 <input type="text" id="newUsername" name="id" required>
@@ -55,7 +55,7 @@
                 <input type="email" id="newEmail" name="email" pattern=".+@gmail\.com" placeholder="example@gmail.com" required>
             </div>
             <div style="margin-bottom: 15px;">
-                <input type="hidden" id="role" name="roles" value="ROLE">
+                <input type="hidden" id="role" name="roles" value="ROLE_ADMIN">
             </div>
             <div>
                 <button type="submit">회원가입</button>
