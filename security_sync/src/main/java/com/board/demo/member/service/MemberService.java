@@ -18,7 +18,7 @@ public class MemberService {
 
     public int addMemberInfo(Member member){
         member.setPw(passwordEncoder.encode(member.getPw()));
-        Role role = new Role("id","ROLE_ADMIN");
+        Role role = new Role("id", member.getRoles().toString());
         addMemberRole(role);
         return userRepository.saveMember(member);
     }

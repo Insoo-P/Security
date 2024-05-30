@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,5 +19,5 @@ public class Member {
     private String fullName;
     private String email;
     // Role Table에서 가져오기
-    private List<Role> roles;
+    private Set<String> roles;
 }

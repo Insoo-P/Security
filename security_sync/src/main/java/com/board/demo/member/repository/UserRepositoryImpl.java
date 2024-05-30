@@ -11,7 +11,9 @@ import org.springframework.stereotype.Repository;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Repository
 public class UserRepositoryImpl implements UserRepository{
@@ -21,13 +23,17 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public int saveMember(Member member) {
-        String sql = "INSERT INTO MEMBER (ID, PW, FULLNAME, EMAIL, ROLES) VALUES (?, ?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, member.getId(), member.getPw(), member.getFullName(), member.getEmail(), member.getRoles());
+        String sql = "INSERT INTO MEMBER (MEMBER_ID, PW, FULLNAME, EMAIL) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, member.getId(), member.getPw(), member.getFullName(), member.getEmail());
     }
 
     @Override
     public int saveRole(Role role) {
-        return 0;
+        String seqSql = "SELECT NEXT VALUE FOR ROLES_SEQ";
+        long rolesId = jdbcTemplate.queryForObject(seqSql, Long.class);
+
+        String sql = "INSERT INTO ROLES (ROLES_ID, MEMBER_ID, ROLE) VALUES (?, ?, ?)";
+        return jdbcTemplate.update(sql, rolesId, role.getId(), role.getRole());
     }
 
     @Override
@@ -37,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository{
 
     @Override
     public boolean existsById(String id) {
-        String sql = "SELECT COUNT(*) FROM MEMBER WHERE ID = ?";
+        String sql = "SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, id);
         return count > 0;
     }
@@ -45,23 +51,22 @@ public class UserRepositoryImpl implements UserRepository{
     @Override
     public Member findById(String id) {
         try {
-            String sql = "SELECT m.*, r.role_name\n" +
+            String sql = "SELECT m.*, r.role\n" +
                     "FROM MEMBER m\n" +
-                    "INNER JOIN ROLES r ON m.role_id = r.id\n" +
-                    "WHERE m.id = ?";
+                    "INNER JOIN ROLES r ON m.member_id = r.member_id\n" +
+                    "WHERE m.member_id = ?";
             return jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<Member>() {
                 @Override
                 public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
                     Member member = new Member();
-                    member.setId(rs.getString("ID"));
+                    member.setId(rs.getString("MEMBER_ID"));
                     member.setPw(rs.getString("PW"));
                     member.setFullName(rs.getString("FULLNAME"));
                     member.setEmail(rs.getString("EMAIL"));
 
-                    List<Role> roles = new ArrayList<>();
+                    Set<String> roles = new HashSet<>();
                     do {
-                        Role roleName = Role.valueOf(rs.getString("ROLE_NAME"));
-                        roles.add(roleName);
+                        roles.add(rs.getString("ROLE_NAME"));
                     } while (rs.next());
 
                     member.setRoles(roles);
