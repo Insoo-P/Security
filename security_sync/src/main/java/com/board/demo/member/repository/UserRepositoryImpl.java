@@ -55,24 +55,54 @@ public class UserRepositoryImpl implements UserRepository{
                     "FROM MEMBER m\n" +
                     "INNER JOIN ROLES r ON m.member_id = r.member_id\n" +
                     "WHERE m.member_id = ?";
-            return jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<Member>() {
-                @Override
-                public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
-                    Member member = new Member();
-                    member.setId(rs.getString("MEMBER_ID"));
-                    member.setPw(rs.getString("PW"));
-                    member.setFullName(rs.getString("FULLNAME"));
-                    member.setEmail(rs.getString("EMAIL"));
+            return jdbcTemplate.query(sql, new Object[]{id}, rs -> {
+                Member member = null;
+                Set<Role> roles = new HashSet<>();
 
-                    Set<String> roles = new HashSet<>();
-                    do {
-                        roles.add(rs.getString("ROLE_NAME"));
-                    } while (rs.next());
-
-                    member.setRoles(roles);
-                    return member;
+                while (rs.next()) {
+                    if (member == null) {
+                        member = new Member();
+                        member.setId(rs.getString("MEMBER_ID"));
+                        member.setPw(rs.getString("PW"));
+                        member.setFullName(rs.getString("FULLNAME"));
+                        member.setEmail(rs.getString("EMAIL"));
+                    }
+                    Role role = new Role();
+                    // role.setId(rs.getString("ROLES_ID"));
+                    role.setRole(rs.getString("ROLE"));
+                    roles.add(role);
                 }
+
+                if (member != null) {
+                    member.setRoles(roles);
+                }
+
+                return member;
             });
+//            return jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<Member>() {
+//                @Override
+//                public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
+//                    Member member = new Member();
+//                    member.setId(rs.getString("MEMBER_ID"));
+//                    member.setPw(rs.getString("PW"));
+//                    member.setFullName(rs.getString("FULLNAME"));
+//                    member.setEmail(rs.getString("EMAIL"));
+//
+//                    List<Role> roles = new ArrayList<>();
+//                    do {
+//                        Role role = new Role();
+//                        role.setRole(rs.getString("ROLE_NAME"));
+//                        roles.add(role);
+//                    } while (rs.next());
+//
+//                    member.setRoles(roles);
+//                    return member;
+//                }
+//            });
+
+
+
+
         } catch (EmptyResultDataAccessException e){
             return null;
         }

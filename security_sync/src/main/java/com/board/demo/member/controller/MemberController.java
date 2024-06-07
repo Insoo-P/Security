@@ -3,6 +3,7 @@ package com.board.demo.member.controller;
 import com.board.demo.member.repository.UserRepository;
 import com.board.demo.member.service.MemberService;
 import com.board.demo.security.Member;
+import com.board.demo.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,6 +15,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Controller

@@ -2,6 +2,7 @@
 DROP TABLE IF EXISTS roles;
 DROP TABLE IF EXISTS member;
 DROP SEQUENCE IF EXISTS roles_seq;
+
 -- Create the member table
 CREATE TABLE member (
     member_id VARCHAR(50) NOT NULL,

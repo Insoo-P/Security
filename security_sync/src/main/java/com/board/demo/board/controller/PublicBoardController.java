@@ -9,5 +9,4 @@ public class PublicBoardController {
 
     @GetMapping("/view/list")
     public String viewPublicBoardListPage() { return "board/public/publicBoardList"; }
-
 }

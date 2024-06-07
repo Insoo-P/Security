@@ -22,13 +22,13 @@
                 </li>
                 <li class="dropdown">
                     <div class="dropdown-content">
-                        <form method="GET" action="/view/board/normalBoardList">
+                        <form method="GET" action="/public/board/view/list">
                             <button type="submit" class="sub-button">게시판 (일반)</button>
                         </form>
                         <form method="GET" action="/view/board/normalBoardList">
                             <button type="submit" class="sub-button">게시판 (우수)</button>
                         </form>
-                        <form method="GET" action="/view/board/normalBoardList">
+                        <form method="GET" action="/premium/board/view/list">
                             <button type="submit" class="sub-button">게시판 (운영)</button>
                         </form>
                     </div>
@@ -36,10 +36,10 @@
                 <li class="dropdown">
                     <div class="sub-button" style="background-color:#c6bdbe; color:black; font-weight: bold; text-align:center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">관리자 페이지</div>
                     <div class="dropdown-content">
-                        <form method="GET" action="/view/board/normalBoardList">
+                        <form method="GET" action="/admin/member/view/list">
                             <button type="submit" class="sub-button" style="background-color:#494f54">멤버 관리</button>
                         </form>
-                        <form method="GET" action="/view/board/normalBoardList">
+                        <form method="GET" action="/admin/board/view/list">
                             <button type="submit" class="sub-button" style="background-color:#494f54">게시판 관리</button>
                         </form>
                     </div>
@@ -56,7 +56,7 @@
                     <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
                         <button type="submit" class="main-button">로그인</button>
                     </form>
-                    <form method="GET" action="/view/member/myPage" sec:authorize="isAuthenticated()">
+                    <form method="GET" action="/member/view/myPage" sec:authorize="isAuthenticated()">
                         <button type="submit" class="main-button">마이페이지</button>
                     </form>
                 </li>

@@ -18,6 +18,7 @@ public class Member {
     private String pw;
     private String fullName;
     private String email;
+//    private String roles;
     // Role Table에서 가져오기
-    private Set<String> roles;
+    private Set<Role> roles;
 }

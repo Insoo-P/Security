@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class MemberService {
 
@@ -18,9 +21,22 @@ public class MemberService {
 
     public int addMemberInfo(Member member){
         member.setPw(passwordEncoder.encode(member.getPw()));
-        Role role = new Role("id", member.getRoles().toString());
-        addMemberRole(role);
-        return userRepository.saveMember(member);
+        int memberCnt = userRepository.saveMember(member);
+        int roleCnt = 0;
+        // 기본 권한 저장
+        if(memberCnt > 0){
+            Role defaultRole = new Role();
+            defaultRole.setId(member.getId());
+            defaultRole.setRole("USER");
+            roleCnt = addMemberRole(defaultRole);
+            // 테스트
+            Role adminRole = new Role();
+            adminRole.setId(member.getId());
+            adminRole.setRole("ADMIN");
+            roleCnt = addMemberRole(adminRole);
+        }
+
+        return roleCnt;
     }
 
     public int addMemberRole(Role role){

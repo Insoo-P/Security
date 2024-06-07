@@ -36,8 +36,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers("/view/signUp", "/view/login").anonymous()
                     .antMatchers("/", "/member/view/signUp", "/member/api/signUp", "/favicon.ico", "/h2-console/**").permitAll()
 //                    .antMatchers("/boardP**").hasRole("ROLE_PREMIUM")
-                    .antMatchers("/admin/**").hasRole("ADMIN")
-                    .antMatchers("/css/**").permitAll()
+//                    .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/admin/board/view/list").hasRole("ADMIN")
+
+                .antMatchers("/css/**").permitAll()
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
