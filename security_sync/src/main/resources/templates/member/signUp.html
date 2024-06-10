@@ -22,14 +22,25 @@
             </li>
             <li class="dropdown">
                 <div class="dropdown-content">
-                    <form method="GET" action="/view/board/normalBoardList">
-                        <button type="submit" class="sub-button">게시판 (일반)</button>
+                    <form method="GET" action="/public/board/view/list">
+                        <button type="submit" class="sub-button">자유게시판 (일반)</button>
                     </form>
-                    <form method="GET" action="/view/board/normalBoardList">
-                        <button type="submit" class="sub-button">게시판 (우수)</button>
+                    <form method="GET" action="/premium/board/view/list">
+                        <button type="submit" class="sub-button">자유게시판 (우수)</button>
                     </form>
-                    <form method="GET" action="/view/board/normalBoardList">
-                        <button type="submit" class="sub-button">게시판 (운영)</button>
+                    <form method="GET" action="/public/upBoard/view/list">
+                        <button type="submit" class="sub-button">등업게시판 (일반)</button>
+                    </form>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="sub-button" style="background-color:#c6bdbe; color:black; font-weight: bold; text-align:center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">관리자 페이지</div>
+                <div class="dropdown-content">
+                    <form method="GET" action="/admin/member/view/list">
+                        <button type="submit" class="sub-button" style="background-color:#494f54">멤버 관리</button>
+                    </form>
+                    <form method="GET" action="/admin/board/view/list">
+                        <button type="submit" class="sub-button" style="background-color:#494f54">게시판 관리</button>
                     </form>
                 </div>
             </li>
@@ -54,9 +65,6 @@
                 <label for="newPassword">이메일:</label>
                 <input type="email" id="newEmail" name="email" pattern=".+@gmail\.com" placeholder="example@gmail.com" required>
             </div>
-<!--            <div style="margin-bottom: 15px;">-->
-<!--                <input type="hidden" id="role" name="roles" value="ROLE_USER">-->
-<!--            </div>-->
             <div>
                 <button type="submit">회원가입</button>
             </div>
@@ -65,17 +73,21 @@
     <nav class="right-nav">
         <ul>
             <li>
-                <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
+                <form method="GET" action="/member/view/login" sec:authorize="isAnonymous()">
                     <button type="submit" class="main-button">로그인</button>
                 </form>
-                <form method="GET" action="/view/member/myPage" sec:authorize="isAuthenticated()">
+            </li>
+            <li>
+                <form method="GET" action="/member/view/myPage" sec:authorize="isAuthenticated()">
                     <button type="submit" class="main-button">마이페이지</button>
                 </form>
             </li>
             <li>
-                <form method="GET" action="/view/member/signUp" sec:authorize="isAnonymous()">
+                <form method="GET" action="/member/view/signUp" sec:authorize="isAnonymous()">
                     <button type="submit" class="main-button">회원가입</button>
                 </form>
+            </li>
+            <li>
                 <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
                     <button type="submit" class="main-button">로그아웃</button>
                 </form>

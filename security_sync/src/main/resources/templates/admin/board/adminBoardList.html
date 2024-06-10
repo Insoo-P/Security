@@ -1,10 +1,80 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 관리</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
 <body>
-adminBoardList
+<header>
+    <h1>Welcome to My Website</h1>
+</header>
+<div class="container">
+    <nav>
+        <ul>
+            <li>
+                <form method="GET" action="/">
+                    <button type="submit" class="main-button">홈</button>
+                </form>
+            </li>
+            <li class="dropdown">
+                <div class="dropdown-content">
+                    <form method="GET" action="/public/board/view/list">
+                        <button type="submit" class="sub-button">자유게시판 (일반)</button>
+                    </form>
+                    <form method="GET" action="/premium/board/view/list">
+                        <button type="submit" class="sub-button">자유게시판 (우수)</button>
+                    </form>
+                    <form method="GET" action="/public/upBoard/view/list">
+                        <button type="submit" class="sub-button">등업게시판 (일반)</button>
+                    </form>
+                </div>
+            </li>
+            <li class="dropdown">
+                <div class="sub-button" style="background-color:#c6bdbe; color:black; font-weight: bold; text-align:center; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">관리자 페이지</div>
+                <div class="dropdown-content">
+                    <form method="GET" action="/admin/member/view/list">
+                        <button type="submit" class="sub-button" style="background-color:#494f54">멤버 관리</button>
+                    </form>
+                    <form method="GET" action="/admin/board/view/list">
+                        <button type="submit" class="sub-button" style="background-color:#494f54">게시판 관리</button>
+                    </form>
+                </div>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <h2>게시판 관리</h2>
+    </main>
+    <nav class="right-nav">
+        <ul>
+            <li>
+                <form method="GET" action="/member/view/login" sec:authorize="isAnonymous()">
+                    <button type="submit" class="main-button">로그인</button>
+                </form>
+            </li>
+            <li>
+                <form method="GET" action="/member/view/myPage" sec:authorize="isAuthenticated()">
+                    <button type="submit" class="main-button">마이페이지</button>
+                </form>
+            </li>
+            <li>
+                <form method="GET" action="/member/view/signUp" sec:authorize="isAnonymous()">
+                    <button type="submit" class="main-button">회원가입</button>
+                </form>
+            </li>
+            <li>
+                <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
+                    <button type="submit" class="main-button">로그아웃</button>
+                </form>
+            </li>
+        </ul>
+    </nav>
+</div>
+<footer>
+    <p>&copy; 2024 My Website</p>
+</footer>
 </body>
 </html>

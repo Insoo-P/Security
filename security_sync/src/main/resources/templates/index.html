@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en"
-      xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
@@ -23,13 +22,13 @@
                 <li class="dropdown">
                     <div class="dropdown-content">
                         <form method="GET" action="/public/board/view/list">
-                            <button type="submit" class="sub-button">게시판 (일반)</button>
-                        </form>
-                        <form method="GET" action="/view/board/normalBoardList">
-                            <button type="submit" class="sub-button">게시판 (우수)</button>
+                            <button type="submit" class="sub-button">자유게시판 (일반)</button>
                         </form>
                         <form method="GET" action="/premium/board/view/list">
-                            <button type="submit" class="sub-button">게시판 (운영)</button>
+                            <button type="submit" class="sub-button">자유게시판 (우수)</button>
+                        </form>
+                        <form method="GET" action="/public/upBoard/view/list">
+                            <button type="submit" class="sub-button">등업게시판 (일반)</button>
                         </form>
                     </div>
                 </li>
@@ -53,17 +52,21 @@
         <nav class="right-nav">
             <ul>
                 <li>
-                    <form method="GET" action="/view/member/login" sec:authorize="isAnonymous()">
+                    <form method="GET" action="/member/view/login" sec:authorize="isAnonymous()">
                         <button type="submit" class="main-button">로그인</button>
                     </form>
+                </li>
+                <li>
                     <form method="GET" action="/member/view/myPage" sec:authorize="isAuthenticated()">
                         <button type="submit" class="main-button">마이페이지</button>
                     </form>
                 </li>
                 <li>
-                    <form method="GET" action="/view/member/signUp" sec:authorize="isAnonymous()">
+                    <form method="GET" action="/member/view/signUp" sec:authorize="isAnonymous()">
                         <button type="submit" class="main-button">회원가입</button>
                     </form>
+                </li>
+                <li>
                     <form method="GET" action="/api/logout" sec:authorize="isAuthenticated()">
                         <button type="submit" class="main-button">로그아웃</button>
                     </form>

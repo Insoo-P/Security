@@ -1,12 +1,16 @@
 package com.board.demo.board.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-//PremiumBoardController
-@RequestMapping("/public/board")
+@Controller
+@RequestMapping("/public")
 public class PublicBoardController {
 
-    @GetMapping("/view/list")
+    @GetMapping("/board/view/list")
     public String viewPublicBoardListPage() { return "board/public/publicBoardList"; }
+
+    @GetMapping("/upBoard/view/list")
+    public String viewPublicUpBoardListPage() { return "board/public/publicUpBoardList"; }
 }

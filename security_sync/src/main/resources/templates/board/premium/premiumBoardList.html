@@ -4,9 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>로그인</title>
+    <title>자유게시판(우수)</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
-    <link rel="stylesheet" type="text/css" href="/css/login.css">
 </head>
 <body>
 <header>
@@ -46,24 +45,8 @@
             </li>
         </ul>
     </nav>
-    <main class="main-login">
-        <h2>로그인</h2>
-        <div th:if="${message}" class="alert alert-danger">
-            <p th:text="${message}"></p>
-        </div>
-        <form method="POST" action="/member/api/login" style="width:40%;">
-            <div style="margin-bottom: 15px;">
-                <label for="username">아이디:</label>
-                <input type="text" id="username" name="id" required>
-            </div>
-            <div style="margin-bottom: 15px;">
-                <label for="password">비밀번호:</label>
-                <input type="password" id="password" name="pw" required>
-            </div>
-            <div>
-                <button type="submit">로그인</button>
-            </div>
-        </form>
+    <main>
+        <h2>자유게시판 (우수)</h2>
     </main>
     <nav class="right-nav">
         <ul>

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,25 +23,6 @@ public class CustomUserDetailsService implements UserDetailsService {
     private UserRepository userRepository;
 
 
-//    @Override
-//    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-//        Member member = userRepository.findById(id);
-//
-//        if (member == null) {
-//            throw new UsernameNotFoundException("존재하지 않는 계정입니다.");
-//        }
-//
-//        String rolesString = member.getRoles().stream()
-//                .map(Role::getRole)
-//                .collect(Collectors.joining(","));
-//
-//        return User.builder()
-//                .username(member.getId())
-//                .password(member.getPw())
-//                .roles(rolesString)
-//                .build();
-//    }
-
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
         Member member = userRepository.findById(id);
@@ -49,24 +31,19 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("존재하지 않는 계정입니다.");
         }
 
-        String rolesString = member.getRoles().stream()
-                .map(Role::getRole)
+        String authoritiesString = member.getRoles().stream()
+                .flatMap(role -> Arrays.stream(role.getRole().split(",")))
+                .map(String::trim)
                 .collect(Collectors.joining(","));
 
         return org.springframework.security.core.userdetails.User.builder()
                 .username(member.getId())
                 .password(member.getPw())
-                .roles(rolesString)
+                .roles(authoritiesString.split(","))
                 .build();
     }
 
-    private Collection<? extends GrantedAuthority> mapRolesToAuthorities(Collection<Role> roles) {
-        return roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getRole()))
-                .collect(Collectors.toList());
+    private Collection<? extends GrantedAuthority> authorities() {
+        return Arrays.asList(new SimpleGrantedAuthority("USER")); // 권한 세팅
     }
-
-//    private Collection<? extends GrantedAuthority> authorities() {
-//        return Arrays.asList(new SimpleGrantedAuthority("USER")); // 권한 세팅
-//    }
 }

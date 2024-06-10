@@ -1,13 +1,12 @@
 package com.board.demo.config;
 
-import com.board.demo.security.CustomAuthFailureHandler;
-import com.board.demo.security.CustomAuthSuccessHandler;
-import com.board.demo.security.CustomUserDetailsService;
+import com.board.demo.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,20 +25,24 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomUserDetailsService customUserDetailsService;
 
+    @Autowired
+    CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+
+    @Autowired
+    CustomAccessDeniedHandler customAccessDeniedHandler;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.headers().frameOptions().disable();
         http.csrf()
-                .ignoringAntMatchers("/h2-console/**")
+//                .ignoringAntMatchers("/h2-console/**")
                 .disable()
                 .authorizeRequests()
-//                .antMatchers("/view/signUp", "/view/login").anonymous()
-                    .antMatchers("/", "/member/view/signUp", "/member/api/signUp", "/favicon.ico", "/h2-console/**").permitAll()
-//                    .antMatchers("/boardP**").hasRole("ROLE_PREMIUM")
-//                    .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/admin/board/view/list").hasRole("ADMIN")
-
-                .antMatchers("/css/**").permitAll()
+//                .antMatchers("/test/board/list").anonymous()
+                    .antMatchers("/", "/member/view/signUp", "/member/api/signUp", "/member/view/login").permitAll()
+                    .antMatchers("/public/**","/member/view/myPage").hasRole("USER")
+                    .antMatchers("/premium/**").hasRole("PREMIUM")
+                    .antMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -47,23 +50,17 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/member/api/login")
                     .usernameParameter("id")
                     .passwordParameter("pw")
-//                    .defaultSuccessUrl("/")
                     .successHandler(customAuthSuccessHandler)
                     .failureHandler(customAuthFailHandler)
                     .permitAll()
                 .and()
                 .logout()
                     .logoutUrl("/api/logout")
-                    .logoutSuccessUrl("/");
-//                    .logoutSuccessHandler((request, response, authentication) -> {
-//                        response.sendRedirect("/view/login");
-//                    })
-//                .and()
-//                .exceptionHandling()
-//                .accessDeniedHandler(new CustomAccessDeniedHandler());
-//                .authenticationEntryPoint();
-//                    response.sendRedirect("/");
-//                });
+                    .logoutSuccessUrl("/")
+                .and()
+                .exceptionHandling()
+                .authenticationEntryPoint(customAuthenticationEntryPoint)
+                .accessDeniedHandler(customAccessDeniedHandler);
     }
 
     @Override
@@ -72,18 +69,13 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder());
     }
 
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/h2-console/**", "/favicon.ico");
+    }
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-//    private AccessDeniedHandler accessDeniedHandler() {
-//        CustomAccessDeniedHandler customAccessDeniedHandler = new CustomAccessDeniedHandler();
-//        return customAccessDeniedHandler;
-//    }
-
-//    @Override
-//    public void configure(WebSecurity web) {
-//        web.ignoring().antMatchers("/ignore1", "/ignore2");
-//    }
 }

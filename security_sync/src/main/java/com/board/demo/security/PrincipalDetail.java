@@ -1,4 +1,4 @@
-//package com.board.demo.security;
+package com.board.demo.security;
 //
 //import org.springframework.security.core.GrantedAuthority;
 //import org.springframework.security.core.authority.SimpleGrantedAuthority;

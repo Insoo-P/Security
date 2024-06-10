@@ -1,18 +1,13 @@
 package com.board.demo.member.repository;
-import com.board.demo.security.Role;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.RowMapper;
 
 import com.board.demo.security.Member;
+import com.board.demo.security.Role;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Repository
@@ -42,6 +37,13 @@ public class UserRepositoryImpl implements UserRepository{
     }
 
     @Override
+    public boolean existsByRole(String id,String role) {
+        String sql = "SELECT COUNT(*) FROM ROLES WHERE MEMBER_ID = ? AND ROLE = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, id, role);
+        return count > 0;
+    }
+
+    @Override
     public boolean existsById(String id) {
         String sql = "SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = ?";
         int count = jdbcTemplate.queryForObject(sql, Integer.class, id);
@@ -68,7 +70,6 @@ public class UserRepositoryImpl implements UserRepository{
                         member.setEmail(rs.getString("EMAIL"));
                     }
                     Role role = new Role();
-                    // role.setId(rs.getString("ROLES_ID"));
                     role.setRole(rs.getString("ROLE"));
                     roles.add(role);
                 }
@@ -79,30 +80,6 @@ public class UserRepositoryImpl implements UserRepository{
 
                 return member;
             });
-//            return jdbcTemplate.queryForObject(sql, new Object[]{id}, new RowMapper<Member>() {
-//                @Override
-//                public Member mapRow(ResultSet rs, int rowNum) throws SQLException {
-//                    Member member = new Member();
-//                    member.setId(rs.getString("MEMBER_ID"));
-//                    member.setPw(rs.getString("PW"));
-//                    member.setFullName(rs.getString("FULLNAME"));
-//                    member.setEmail(rs.getString("EMAIL"));
-//
-//                    List<Role> roles = new ArrayList<>();
-//                    do {
-//                        Role role = new Role();
-//                        role.setRole(rs.getString("ROLE_NAME"));
-//                        roles.add(role);
-//                    } while (rs.next());
-//
-//                    member.setRoles(roles);
-//                    return member;
-//                }
-//            });
-
-
-
-
         } catch (EmptyResultDataAccessException e){
             return null;
         }
