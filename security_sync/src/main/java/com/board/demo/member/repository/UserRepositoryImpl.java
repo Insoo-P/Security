@@ -89,4 +89,39 @@ public class UserRepositoryImpl implements UserRepository{
     public int updateMember(Member member) {
         return 0;
     }
+
+    // 로그인 실패 횟수 증가
+    @Override
+    public int increaseLoginAttempts(String id, int failedAttempts) {
+        String sql = "UPDATE MEMBER SET LOGINATTEMPTS = ? WHERE MEMBER_ID = ?";
+        return jdbcTemplate.update(sql, failedAttempts, id);
+    }
+
+    // 로그인 실패 횟수 조회
+    @Override
+    public int getLoginAttempts(String id) {
+        String sql = "SELECT loginAttempts FROM MEMBER WHERE MEMBER_ID = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, id);
+    }
+
+    // 계정 잠금
+    @Override
+    public int setAccountLocked(String id) {
+        String sql = "UPDATE MEMBER SET ACCOUNTLOCKED = TRUE WHERE MEMBER_ID = ?";
+        return jdbcTemplate.update(sql, id);
+    }
+
+    // 계정 잠금 여부 조회
+    @Override
+    public boolean isAccountLocked(String id) {
+        String sql = "SELECT ACCOUNTLOCKED FROM MEMBER WHERE MEMBER_ID = ?";
+        return jdbcTemplate.queryForObject(sql, Boolean.class, id);
+    }
+
+    // 계정 잠금 해제 및 로그인 실패 횟수 초기화
+    @Override
+    public int resetLoginAndUnlockAccount(String id) {
+        String sql = "UPDATE MEMBER SET LOGINATTEMPTS = 0, ACCOUNTLOCKED = FALSE WHERE MEMBER_ID = ?";
+        return jdbcTemplate.update(sql, id);
+    }
 }

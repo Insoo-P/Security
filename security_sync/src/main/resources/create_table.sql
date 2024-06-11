@@ -9,6 +9,8 @@ CREATE TABLE member (
     pw VARCHAR(255) NOT NULL,
     fullName VARCHAR(255),
     email VARCHAR(255) UNIQUE,
+    loginAttempts INTEGER DEFAULT 0,
+    accountLocked BOOLEAN DEFAULT false,
     PRIMARY KEY (member_id)
 );
 

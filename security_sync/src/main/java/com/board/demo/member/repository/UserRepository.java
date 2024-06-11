@@ -26,4 +26,19 @@ public interface UserRepository {
     // 유저 권한이 존재하는지 여부를 확인하는 메서드
     public boolean existsByRole(String id, String role);
 
+
+    // 로그인 실패 횟수 증가
+    public int increaseLoginAttempts(String id, int failedAttempts);
+
+    // 로그인 실패 횟수 조회
+    public int getLoginAttempts(String id);
+
+    // 계정 잠금 true
+    public int setAccountLocked(String id);
+
+    // 계정 잠금 여부 조회
+    public boolean isAccountLocked(String id);
+
+    // 계정 잠금 해제 및 로그인 실패 횟수 초기화
+    public int resetLoginAndUnlockAccount(String id);
 }

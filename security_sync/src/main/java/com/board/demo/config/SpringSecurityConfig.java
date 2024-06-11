@@ -22,14 +22,21 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     CustomAuthSuccessHandler customAuthSuccessHandler;
 
+    private final CustomUserDetailsService customUserDetailsService;
+
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    private PasswordEncoderConfig passwordEncoder;
 
     @Autowired
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Autowired
     CustomAccessDeniedHandler customAccessDeniedHandler;
+
+    @Autowired
+    public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService) {
+        this.customUserDetailsService = customUserDetailsService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -66,7 +73,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+                .passwordEncoder(passwordEncoder.passwordEncoder());
     }
 
     @Override
@@ -74,8 +81,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers("/css/**", "/js/**", "/img/**", "/lib/**", "/h2-console/**", "/favicon.ico");
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+//    @Bean
+//    public PasswordEncoder passwordEncoder() {
+//        return new BCryptPasswordEncoder();
+//    }
 }

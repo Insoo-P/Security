@@ -29,22 +29,31 @@ public class MemberController {
 
     // 회원가입 처리
     @PostMapping("/api/signUp")
-    public String addMember(Member member, Model model) {
+    public String registerMember(Member member, Model model) {
         String message = "";
         if(!userRepository.existsById(member.getId())){
             int cnt = memberService.addMemberInfo(member);
             message = cnt > 0 ? "회원가입을 성공했습니다." : "회원가입이 실패했습니다.";
+            model.addAttribute("message", message);
+            return "member/login";
         } else {
             message = "회원 아이디가 존재합니다.";
+            model.addAttribute("message", message);
+            return "member/signUp";
         }
-        model.addAttribute("message", message);
-        return "member/login";
+
+
     }
 
     // 로그인 페이지 보기
     @GetMapping("/view/login")
     public String viewLoginPage(HttpSession session, Model model) {
         String error = (String) session.getAttribute("error");
+        if (error != null) {
+            model.addAttribute("message", error);
+            // 오류 메시지를 사용한 후에는 세션에서 삭제
+            session.removeAttribute("error");
+        }
         model.addAttribute("message", error);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication.isAuthenticated() && !(authentication instanceof AnonymousAuthenticationToken) ? "index" : "member/login";

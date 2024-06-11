@@ -1,34 +1,37 @@
 package com.board.demo.security;
 
 import com.board.demo.member.repository.UserRepository;
+import com.board.demo.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final MemberService memberService;
 
+    @Autowired
+    public CustomUserDetailsService(MemberService memberService){
+        this.memberService = memberService;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        Member member = userRepository.findById(id);
+        Member member = memberService.findMemberById(id);
 
         if (member == null) {
-            throw new UsernameNotFoundException("존재하지 않는 계정입니다.");
+            throw new UsernameNotFoundException("");
+        }
+
+        if(memberService.checkIfAccountIsLocked(id)){
+            throw new LockedException("계정이 잠겨 있습니다.");
         }
 
         String authoritiesString = member.getRoles().stream()
@@ -43,7 +46,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .build();
     }
 
-    private Collection<? extends GrantedAuthority> authorities() {
-        return Arrays.asList(new SimpleGrantedAuthority("USER")); // 권한 세팅
-    }
+//    private Collection<? extends GrantedAuthority> authorities() {
+//        return Arrays.asList(new SimpleGrantedAuthority("USER")); // 권한 세팅
+//    }
 }
