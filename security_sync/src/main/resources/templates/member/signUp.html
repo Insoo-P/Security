@@ -60,11 +60,11 @@
             </div>
             <div style="margin-bottom: 15px;">
                 <label for="newPassword">이름:</label>
-                <input type="text" id="newFullName" name="fullName" required>
+                <input type="text" id="newFullName" name="fullName"required>
             </div>
             <div style="margin-bottom: 15px;">
                 <label for="newPassword">이메일:</label>
-                <input type="email" id="newEmail" name="email" pattern=".+@gmail\.com" placeholder="example@gmail.com" required>
+                <input type="email" id="newEmail" name="email" pattern=".+@gmail\.com" placeholder="example@gmail.com" title="@gmail.com 형식으로 작성해주세요." required>
             </div>
             <div>
                 <button type="submit">회원가입</button>
@@ -101,6 +101,8 @@
 </footer>
 
 <script th:inline="javascript">
+
+    // alert 창
     window.onload = function() {
         let msg = [[${message}]];
         console.log(msg)
@@ -108,6 +110,23 @@
             alert(msg)
         }
     }
+
+    // Member 기본 셋팅
+    document.addEventListener('DOMContentLoaded', function () {
+        let modelMember = [[${member}]];
+        if(modelMember !== null){
+            let member = {
+                id: (modelMember.id !== null) ? modelMember.id : "",
+                fullName: (modelMember.fullName !== null) ? modelMember.fullName : "",
+                email: (modelMember.email !== null) ? modelMember.email : ""
+            };
+            document.getElementById('newUsername').value = member.id;
+            document.getElementById('newFullName').value = member.fullName;
+            document.getElementById('newEmail').value = member.email;
+        }
+    });
+
+
 </script>
 </body>
 </html>

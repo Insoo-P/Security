@@ -49,13 +49,13 @@
     </nav>
     <main class="main-mypage">
         <h2>마이페이지</h2>
-        <div th:if="${message}" class="alert alert-danger">
-            <p th:text="${message}"></p>
-        </div>
         <form method="POST" action="/api/login" style="width:40%;">
+            <div th:if="${message}" class="alert alert-danger">
+                <p th:text="${message}"></p>
+            </div>
             <div style="margin-bottom: 15px;">
                 <label>아이디:</label>
-                <input class="disabled-input" type="text" id="id" name="id" th:value="${member.id}" disabled>
+                <input type="text" id="id" name="id" th:value="${member.id}" disabled>
             </div>
             <div style="margin-bottom: 15px;">
                 <label>비밀번호:</label>
@@ -65,19 +65,34 @@
                 <label>이름:</label>
                 <input class="disabled-input" type="text" id="fullName" name="fullName" th:value="${member.fullName}" disabled>
             </div>
-            <div style="margin-bottom: 15px;">
+            <div style="margin-bottom: 20px;">
                 <label>이메일:</label>
                 <input class="disabled-input" type="text" id="email" name="email" th:value="${member.email}" disabled>
             </div>
+
+            <div style="margin-bottom: 20px;" >
+                <table border='1' style="width: 100%;">
+                    <thead style="background-color: blue; color:#ffffff;">
+                    <tr>
+                        <th>등급</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <th:block th:each="role : ${member.roles}">
+                        <tr>
+                            <td th:text="${role.role}"></td>
+                        </tr>
+                    </th:block>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-bottom: 10px;">
+                <button id="memberInfoEditBtn" type="button" onclick="toggleReadOnly()" >회원정보 수정 활성화</button>
+            </div>
             <div>
-                <div style="margin-bottom: 15px;">
-                    <label>등급:</label>
-                    <input type="text" id="role" name="role" th:value="${member.roles}" disabled>
-                </div>
-                <div>
-                    <button id="memberInfoEditBtn" type="button" onclick="toggleReadOnly()">회원정보 수정 활성화</button>
-                    <button id="memberInfoSaveBtn" type="submit" style="display:none">회원정보 저장</button>
-                </div>
+                <button id="memberInfoSaveBtn" type="submit" style="display:none">회원정보 저장</button>
+            </div>
         </form>
     </main>
     <nav class="right-nav">
@@ -112,10 +127,19 @@
 <script>
     function toggleReadOnly() {
         const disabledInputs = document.getElementsByClassName('disabled-input');
+        const memberInfoEditBtn = document.getElementById('memberInfoEditBtn');
+        const memberInfoSaveBtn = document.getElementById('memberInfoSaveBtn');
+        const isDisabled = disabledInputs[0].disabled;
         for(let i=0; i< disabledInputs.length; i++){
             disabledInputs[i].disabled = !disabledInputs[i].disabled;
         }
-
+        if (isDisabled) {
+            memberInfoEditBtn.innerText = "회원정보 수정 비활성화";
+            memberInfoSaveBtn.style.display = "block";
+        } else {
+            memberInfoEditBtn.innerText = "회원정보 수정 활성화";
+            memberInfoSaveBtn.style.display = "none";
+        }
     }
 </script>
 </script>

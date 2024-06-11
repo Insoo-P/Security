@@ -16,33 +16,7 @@ public class UserRepositoryImpl implements UserRepository{
     @Autowired
     JdbcTemplate jdbcTemplate;
 
-    @Override
-    public int saveMember(Member member) {
-        String sql = "INSERT INTO MEMBER (MEMBER_ID, PW, FULLNAME, EMAIL) VALUES (?, ?, ?, ?)";
-        return jdbcTemplate.update(sql, member.getId(), member.getPw(), member.getFullName(), member.getEmail());
-    }
-
-    @Override
-    public int saveRole(Role role) {
-        String seqSql = "SELECT NEXT VALUE FOR ROLES_SEQ";
-        long rolesId = jdbcTemplate.queryForObject(seqSql, Long.class);
-
-        String sql = "INSERT INTO ROLES (ROLES_ID, MEMBER_ID, ROLE) VALUES (?, ?, ?)";
-        return jdbcTemplate.update(sql, rolesId, role.getId(), role.getRole());
-    }
-
-    @Override
-    public int updateRole(Role role) {
-        return 0;
-    }
-
-    @Override
-    public boolean existsByRole(String id,String role) {
-        String sql = "SELECT COUNT(*) FROM ROLES WHERE MEMBER_ID = ? AND ROLE = ?";
-        int count = jdbcTemplate.queryForObject(sql, Integer.class, id, role);
-        return count > 0;
-    }
-
+    // 유저가 존재하는지 여부를 확인
     @Override
     public boolean existsById(String id) {
         String sql = "SELECT COUNT(*) FROM MEMBER WHERE MEMBER_ID = ?";
@@ -50,6 +24,15 @@ public class UserRepositoryImpl implements UserRepository{
         return count > 0;
     }
 
+    // email이 존재하는지 여부를 확인
+    @Override
+    public boolean existsByEmail(String email) {
+        String sql = "SELECT COUNT(*) FROM MEMBER WHERE EMAIL = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, email);
+        return count > 0;
+    }
+
+    // 유저 정보 조회 (MEMBER, ROLES 포함)
     @Override
     public Member findById(String id) {
         try {
@@ -85,10 +68,44 @@ public class UserRepositoryImpl implements UserRepository{
         }
     }
 
+    // 유저 정보 업데이트하는 메서드
     @Override
     public int updateMember(Member member) {
         return 0;
     }
+
+    // 유저 정보 저장하는 메서드
+    @Override
+    public int saveMember(Member member) {
+        String sql = "INSERT INTO MEMBER (MEMBER_ID, PW, FULLNAME, EMAIL) VALUES (?, ?, ?, ?)";
+        return jdbcTemplate.update(sql, member.getId(), member.getPw(), member.getFullName(), member.getEmail());
+    }
+
+    // 유저 권한 저장하는 메서드
+    @Override
+    public int saveRole(Role role) {
+        String seqSql = "SELECT NEXT VALUE FOR ROLES_SEQ";
+        long rolesId = jdbcTemplate.queryForObject(seqSql, Long.class);
+
+        String sql = "INSERT INTO ROLES (ROLES_ID, MEMBER_ID, ROLE) VALUES (?, ?, ?)";
+        return jdbcTemplate.update(sql, rolesId, role.getId(), role.getRole());
+    }
+
+    // 유저 권한 수정하는 메서드
+    @Override
+    public int updateRole(Role role) {
+        return 0;
+    }
+
+    // 유저 권한이 존재하는지 여부를 확인하는 메서드
+    @Override
+    public boolean existsByRole(String id,String role) {
+        String sql = "SELECT COUNT(*) FROM ROLES WHERE MEMBER_ID = ? AND ROLE = ?";
+        int count = jdbcTemplate.queryForObject(sql, Integer.class, id, role);
+        return count > 0;
+    }
+
+
 
     // 로그인 실패 횟수 증가
     @Override

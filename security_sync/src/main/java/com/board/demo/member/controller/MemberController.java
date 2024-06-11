@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
@@ -23,26 +24,34 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-
-    @Autowired
-    UserRepository userRepository;
-
-    // 회원가입 처리
+    // 회원가입 로직 처리
     @PostMapping("/api/signUp")
     public String registerMember(Member member, Model model) {
         String message = "";
-        if(!userRepository.existsById(member.getId())){
-            int cnt = memberService.addMemberInfo(member);
-            message = cnt > 0 ? "회원가입을 성공했습니다." : "회원가입이 실패했습니다.";
+        if(memberService.checkIfIdExists(member.getId()) && memberService.checkIfEmailExists(member.getEmail())){
+            message = "회원 아이디와 이메일이 모두 이미 등록되어 있습니다.";
             model.addAttribute("message", message);
-            return "member/login";
-        } else {
-            message = "회원 아이디가 존재합니다.";
-            model.addAttribute("message", message);
+            model.addAttribute("member", member);
             return "member/signUp";
         }
-
-
+        else if(memberService.checkIfIdExists(member.getId())){
+            message = "회원 아이디가 이미 존재합니다.";
+            model.addAttribute("message", message);
+            model.addAttribute("member", member);
+            return "member/signUp";
+        }
+        else if(memberService.checkIfEmailExists(member.getEmail())){
+            message = "이메일이 이미 등록되어 있습니다.";
+            model.addAttribute("message", message);
+            model.addAttribute("member", member);
+            return "member/signUp";
+        }
+        else {
+            boolean result = memberService.addMemberInfo(member);
+            message = result ? "회원가입을 성공했습니다." : "회원가입이 실패했습니다.";
+            model.addAttribute("message", message);
+            return "member/login";
+        }
     }
 
     // 로그인 페이지 보기

@@ -1,5 +1,6 @@
 package com.board.demo.config;
 
+import com.board.demo.filter.RequestMethodFilter;
 import com.board.demo.security.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -34,6 +36,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     CustomAccessDeniedHandler customAccessDeniedHandler;
 
     @Autowired
+    RequestMethodFilter requestMethodFilter;
+
+    @Autowired
     public SpringSecurityConfig(CustomUserDetailsService customUserDetailsService) {
         this.customUserDetailsService = customUserDetailsService;
     }
@@ -45,8 +50,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .ignoringAntMatchers("/h2-console/**")
                 .disable()
                 .authorizeRequests()
-//                .antMatchers("/test/board/list").anonymous()
                     .antMatchers("/", "/member/view/signUp", "/member/api/signUp", "/member/view/login").permitAll()
+//                    .antMatchers("/member/view/signUp", "/member/api/signUp", "/member/view/login").anonymous()
                     .antMatchers("/public/**","/member/view/myPage").hasRole("USER")
                     .antMatchers("/premium/**").hasRole("PREMIUM")
                     .antMatchers("/admin/**").hasRole("ADMIN")
@@ -65,9 +70,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                     .logoutUrl("/api/logout")
                     .logoutSuccessUrl("/")
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(customAuthenticationEntryPoint)
-                .accessDeniedHandler(customAccessDeniedHandler);
+                    .exceptionHandling()
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
+                    .accessDeniedHandler(customAccessDeniedHandler)
+                .and()
+                    .addFilterBefore(requestMethodFilter, BasicAuthenticationFilter.class);
     }
 
     @Override

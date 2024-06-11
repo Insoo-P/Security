@@ -28,3 +28,13 @@
     cursor: pointer;
     width: 100%;
 }
+
+.main-mypage button[type="button"] {
+    background-color: #539dec;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
