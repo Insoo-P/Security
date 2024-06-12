@@ -1,18 +1,17 @@
 package com.board.demo.member.controller;
 
-import com.board.demo.member.repository.UserRepository;
 import com.board.demo.member.service.MemberService;
 import com.board.demo.security.Member;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.thymeleaf.util.StringUtils;
 
 import javax.servlet.http.HttpSession;
 import java.util.Objects;
@@ -24,7 +23,10 @@ public class MemberController {
     @Autowired
     MemberService memberService;
 
-    // 회원가입 로직 처리
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // 회원가입
     @PostMapping("/api/signUp")
     public String registerMember(Member member, Model model) {
         String message = "";
@@ -46,12 +48,57 @@ public class MemberController {
             model.addAttribute("member", member);
             return "member/signUp";
         }
-        else {
-            boolean result = memberService.addMemberInfo(member);
-            message = result ? "회원가입을 성공했습니다." : "회원가입이 실패했습니다.";
+        boolean result = memberService.addMemberInfo(member);
+        message = result ? "회원가입을 성공했습니다." : "회원가입이 실패했습니다.";
+        model.addAttribute("message", message);
+        return "member/login";
+    }
+
+    // 회원정보 수정
+    @PostMapping("/api/edit")
+    public String editMember(Member member, Model model) {
+        String message = "";
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Member modifyBeforeMember = memberService.findMemberById(authentication.getName());
+        boolean pwSame = passwordEncoder.matches(member.getPw(), modifyBeforeMember.getPw());
+        if(!pwSame){
+            message = "비밀번호가 틀립니다.";
             model.addAttribute("message", message);
-            return "member/login";
+            model.addAttribute("member", modifyBeforeMember);
+            return "member/myPage";
         }
+        // 수정 사항 확인
+        boolean fullNameModifiedYn = modifyBeforeMember.getFullName().equals(member.getFullName());
+        boolean emailModifiedYn = modifyBeforeMember.getEmail().equals(member.getEmail());
+
+        if(!fullNameModifiedYn){
+            modifyBeforeMember.setFullName(member.getFullName());
+        }
+
+        if(!emailModifiedYn){
+            if(memberService.checkIfEmailExists(member.getEmail())){
+                message = "이메일이 이미 등록되어 있습니다.";
+                model.addAttribute("message", message);
+                model.addAttribute("member", modifyBeforeMember);
+                return "member/myPage";
+            }else{
+                modifyBeforeMember.setEmail(member.getEmail());
+            }
+        }
+
+        if(fullNameModifiedYn && emailModifiedYn){
+            message = "변경 사항이 없습니다.";
+            model.addAttribute("message", message);
+            model.addAttribute("member", modifyBeforeMember);
+            return "member/myPage";
+        }
+
+        boolean result = memberService.modifyMemberInfo(modifyBeforeMember);
+        message = result ? "회원정보 수정 완료되었습니다." : "회원정보 수정 실패했습니다.";
+        Member modifyMember = memberService.findMemberById(authentication.getName());
+        model.addAttribute("message", message);
+        model.addAttribute("member", modifyMember);
+        return "member/myPage";
     }
 
     // 로그인 페이지 보기

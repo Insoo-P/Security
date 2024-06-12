@@ -17,6 +17,9 @@ public interface MemberService {
     // 유저 정보 저장 (MEMBER, ROLES 포함)
     boolean addMemberInfo(Member member);
 
+    // 유저 정보 수정
+    boolean modifyMemberInfo(Member member);
+
     // 유저 권한 저장
     int addMemberRole(Role role);
 

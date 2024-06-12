@@ -14,7 +14,7 @@ public interface UserRepository {
     // 유저 정보 조회 (MEMBER, ROLES 포함)
     public Member findById(String id);
 
-    // 유저 정보 업데이트하는 메서드
+    // 유저 정보 수정
     public int updateMember(Member member);
 
     // 유저 정보 저장

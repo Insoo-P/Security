@@ -17,6 +17,9 @@ public class MemberServiceImpl implements MemberService{
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+//    @Autowired
+//    private PasswordEncoderConfig passwordEncoder;
+
     // 유저가 존재하는지 여부를 확인
     @Override
     public boolean checkIfIdExists(String id) {
@@ -51,6 +54,12 @@ public class MemberServiceImpl implements MemberService{
             roleCnt = addMemberRole(defaultRole);
         }
         return roleCnt > 0;
+    }
+
+    // 유저 정보 수정
+    @Override
+    public boolean modifyMemberInfo(Member member) {
+        return userRepository.updateMember(member) > 0;
     }
 
     // 유저 권한 저장

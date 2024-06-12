@@ -71,7 +71,8 @@ public class UserRepositoryImpl implements UserRepository{
     // 유저 정보 업데이트하는 메서드
     @Override
     public int updateMember(Member member) {
-        return 0;
+        String sql = "UPDATE MEMBER SET FULLNAME = ?, EMAIL = ? WHERE MEMBER_ID = ?";
+        return jdbcTemplate.update(sql, member.getFullName(), member.getEmail(), member.getId());
     }
 
     // 유저 정보 저장하는 메서드
